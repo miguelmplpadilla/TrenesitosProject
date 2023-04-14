@@ -22,11 +22,14 @@ public class LocomotoraMovement : MonoBehaviour
     void Update()
     {
         //lookAtlocomotora();
-        
-        Vector3 moveTowardsPosicion =
-            Vector3.MoveTowards(transform.position, generadorVias.ultimaVia.transform.position, speed * Time.deltaTime);
 
-        transform.position = new Vector3(moveTowardsPosicion.x, moveTowardsPosicion.y, transform.position.z);
+        if (Input.GetAxisRaw("Horizontal") > 0)
+        {
+            Vector3 moveTowardsPosicion =
+                Vector3.MoveTowards(transform.position, generadorVias.ultimaVia.transform.position, speed * Time.deltaTime);
+
+            transform.position = new Vector3(moveTowardsPosicion.x, moveTowardsPosicion.y, transform.position.z);
+        }
     }
 
     private void lookAtlocomotora()
