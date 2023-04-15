@@ -12,6 +12,7 @@ public class GeneradorVias : MonoBehaviour
     public List<GameObject> vias;
 
     [SerializeField] private int numViasGenerar;
+    [SerializeField] private float distanciaGeneracionVias = 4;
 
     private GameObject locomotora;
 
@@ -29,7 +30,7 @@ public class GeneradorVias : MonoBehaviour
         for (int i = 0; i < numViasGenerar; i++)
         {
             numViasGeneradas++;
-            Vector3 posicionVia = new Vector3(ultimaVia.transform.position.x + 2.3f, ultimaVia.transform.position.y,
+            Vector3 posicionVia = new Vector3(ultimaVia.transform.position.x + distanciaGeneracionVias, ultimaVia.transform.position.y,
                 ultimaVia.transform.position.z);
             GameObject viaGenerada = Instantiate(via, posicionVia, Quaternion.identity);
             

@@ -2,34 +2,37 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LocomotoraMovement : MonoBehaviour
 {
 
     private GeneradorVias generadorVias;
+    
     public float speed = 2;
+    public float currentSpeed = 0;
 
     [SerializeField] private GameObject viaCercana;
     private GameObject viaCercanaReal;
+
+    private Slider sliderAcelerador;
     
     void Start()
     {
         generadorVias = GameObject.Find("GeneradorVias").GetComponent<GeneradorVias>();
         viaCercana = generadorVias.ultimaVia;
         viaCercanaReal = generadorVias.penultimaVia;
+        sliderAcelerador = GameObject.Find("SliderAcelerador").GetComponent<Slider>();
     }
 
     void Update()
     {
-        //lookAtlocomotora();
+        currentSpeed = speed * sliderAcelerador.value;
+        
+        Vector3 moveTowardsPosicion =
+            Vector3.MoveTowards(transform.position, generadorVias.ultimaVia.transform.position, currentSpeed * Time.deltaTime);
 
-        if (Input.GetAxisRaw("Horizontal") > 0)
-        {
-            Vector3 moveTowardsPosicion =
-                Vector3.MoveTowards(transform.position, generadorVias.ultimaVia.transform.position, speed * Time.deltaTime);
-
-            transform.position = new Vector3(moveTowardsPosicion.x, moveTowardsPosicion.y, transform.position.z);
-        }
+        transform.position = new Vector3(moveTowardsPosicion.x, moveTowardsPosicion.y, transform.position.z);
     }
 
     private void lookAtlocomotora()
