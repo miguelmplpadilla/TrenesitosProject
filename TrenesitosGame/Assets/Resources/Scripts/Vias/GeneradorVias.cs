@@ -18,10 +18,14 @@ public class GeneradorVias : MonoBehaviour
 
     private int numViasGeneradas = 0;
 
+    private WorldGenerator worldGenerator;
+
     private void Start()
     {
         locomotora = GameObject.Find("Locomotora");
+        worldGenerator = GameObject.Find("GeneradorMapa").GetComponent<WorldGenerator>();
         
+        worldGenerator.generarChunk();
         generarVias();
     }
 
@@ -45,9 +49,12 @@ public class GeneradorVias : MonoBehaviour
     {
         float distLocomotoraUltimaVia = Vector3.Distance(locomotora.transform.position, ultimaVia.transform.position);
 
+        Debug.Log(distLocomotoraUltimaVia);
+
         if (distLocomotoraUltimaVia < 21)
         {
             generarVias();
+            worldGenerator.generarChunk();
         }
     }
 }
