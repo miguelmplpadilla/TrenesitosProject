@@ -47,7 +47,8 @@ public class WorldGenerator : MonoBehaviour
     private void generarMapeado(int tipoBloqueGenerar)
     {
         Debug.Log(tipoBloqueGenerar);
-        noiseOffset = new Vector2(Random.Range(0, 10), Random.Range(0, 10));
+        noiseOffset = new Vector2(Random.Range(0.0f, 10f), Random.Range(0.0f, 10f));
+        //noiseScale = new Vector2(Random.Range(0.0f, 10f), Random.Range(0.0f, 10f));
 
         for (int i = 0; i < chunkSize.x; i++)
         {
@@ -105,7 +106,7 @@ public class WorldGenerator : MonoBehaviour
 
                         if (prefabAInstanciar != null)
                         {
-                            GameObject prefabInstanciado = Instantiate(prefabAInstanciar, new Vector3(inicioGeneracionMapa.transform.position.x + i + (chunkSize.x * numChunksGenerados), inicioGeneracionMapa.transform.position.y + j, inicioGeneracionMapa.transform.position.z + k), Quaternion.identity);
+                            GameObject prefabInstanciado = Instantiate(prefabAInstanciar, new Vector3(inicioGeneracionMapa.transform.position.x + i + (chunkSize.x * numChunksGenerados), 0, inicioGeneracionMapa.transform.position.z + k), Quaternion.identity);
                             prefabInstanciado.transform.parent = chunk.transform;
                         }
                     }

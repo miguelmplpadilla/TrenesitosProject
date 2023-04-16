@@ -49,8 +49,6 @@ public class GeneradorVias : MonoBehaviour
     {
         float distLocomotoraUltimaVia = Vector3.Distance(locomotora.transform.position, ultimaVia.transform.position);
 
-        Debug.Log(distLocomotoraUltimaVia);
-
         if (distLocomotoraUltimaVia < 21)
         {
             generarVias();

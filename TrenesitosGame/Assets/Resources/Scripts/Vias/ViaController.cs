@@ -19,7 +19,7 @@ public class ViaController : MonoBehaviour
     {
         float distancia = Vector3.Distance(locomotora.transform.position, transform.position);
 
-        if (transform.position.x < locomotora.transform.position.x && distancia > 19)
+        if (transform.position.x < locomotora.transform.position.x && distancia > 50)
         {
             generadorVias.vias.Remove(gameObject);
             Destroy(gameObject);

@@ -2,16 +2,20 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LocomotoraInter : MonoBehaviour
 {
     private GameObject player;
+    private RectTransform slider;
 
     private bool playerEnLocomotora = false;
 
     [SerializeField] GameObject posicionPlayer;
 
     private LocomotoraMovement locomotoraMovement;
+
+    [SerializeField] private GameObject puntoBajarLocomotora;
 
     private void Awake()
     {
@@ -20,6 +24,7 @@ public class LocomotoraInter : MonoBehaviour
 
     private void Start()
     {
+        slider = GameObject.Find("SliderAcelerador").GetComponent<RectTransform>();
         player = GameObject.Find("Player");
     }
 
@@ -27,15 +32,17 @@ public class LocomotoraInter : MonoBehaviour
     {
         if (playerEnLocomotora)
         {
-            if (locomotoraMovement.currentSpeed > 0)
+            if (locomotoraMovement.currentSpeed == 0)
             {
-                if (Input.GetKeyDown(KeyCode.F))
+                if (Input.GetKeyDown(KeyCode.E))
                 {
-                    player.GetComponent<CharacterController>().enabled = true;
+                    slider.localScale = new Vector3(0, 0, 0);
                     player.transform.parent = null;
+                    player.transform.position = puntoBajarLocomotora.transform.position;
+                    player.GetComponent<CharacterController>().enabled = true;
                     player.GetComponent<PlayerMovement>().mov = true;
-                    player.GetComponent<PlayerInterController>().interactuando = false;
                     playerEnLocomotora = false;
+                    player.GetComponent<PlayerInterController>().interactuando = false;
                 }
             }
         }
@@ -43,11 +50,15 @@ public class LocomotoraInter : MonoBehaviour
 
     public void inter()
     {
-        player.GetComponent<CharacterController>().enabled = false;
-        player.transform.parent = gameObject.transform;
-        player.transform.position = posicionPlayer.transform.position;
-        player.GetComponent<PlayerMovement>().mov = false;
-        player.transform.rotation = Quaternion.Euler(0,90,0);
-        playerEnLocomotora = true;
+        if (!playerEnLocomotora)
+        {
+            slider.localScale = new Vector3(1, 1, 1);
+            player.GetComponent<CharacterController>().enabled = false;
+            player.transform.parent = gameObject.transform;
+            player.transform.position = posicionPlayer.transform.position;
+            player.GetComponent<PlayerMovement>().mov = false;
+            player.transform.rotation = Quaternion.Euler(0,90,0);
+            playerEnLocomotora = true;
+        }
     }
 }

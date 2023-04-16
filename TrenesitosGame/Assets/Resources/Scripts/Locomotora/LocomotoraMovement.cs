@@ -32,7 +32,7 @@ public class LocomotoraMovement : MonoBehaviour
         Vector3 moveTowardsPosicion =
             Vector3.MoveTowards(transform.position, generadorVias.ultimaVia.transform.position, currentSpeed * Time.deltaTime);
 
-        transform.position = new Vector3(moveTowardsPosicion.x, moveTowardsPosicion.y, transform.position.z);
+        transform.position = new Vector3(moveTowardsPosicion.x, transform.position.y, transform.position.z);
     }
 
     private void lookAtlocomotora()
