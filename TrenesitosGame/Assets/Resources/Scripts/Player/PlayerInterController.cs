@@ -21,11 +21,14 @@ public class PlayerInterController : MonoBehaviour
         }
     }
 
-    private void OnTriggerStay(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Inter"))
         {
             gameObjectInter = other.gameObject;
+            
+            gameObjectInter.SendMessage("interEnter");
+            
             canInter = true;
         }
     }
@@ -34,6 +37,7 @@ public class PlayerInterController : MonoBehaviour
     {
         if (other.CompareTag("Inter"))
         {
+            gameObjectInter.SendMessage("interExit");
             canInter = false;
             gameObjectInter = null;
         }

@@ -6,18 +6,35 @@ using UnityEngine;
 public class PlayerAtackController : MonoBehaviour
 {
 
-    [SerializeField] private BoxCollider boxColliderAtaque;
+    private Animator animator;
+    private PlayerMovement playerMovement;
+
+    private bool atacando = false;
     
+    private void Awake()
+    {
+        animator = GetComponent<Animator>();
+        playerMovement = GetComponent<PlayerMovement>();
+    }
+
     void Update()
     {
-        if (Input.GetKeyUp(KeyCode.Mouse0))
+        if (!atacando && playerMovement.mov)
         {
-            boxColliderAtaque.enabled = false;
+            if (Input.GetKeyUp(KeyCode.Mouse0))
+            {
+                playerMovement.mov = false;
+                
+                animator.SetTrigger("atacar");
+                
+                atacando = true;
+            }
         }
-        
-        if (Input.GetKeyDown(KeyCode.Mouse0))
-        {
-            boxColliderAtaque.enabled = true;
-        }
+    }
+
+    public void setAtacandoFalse()
+    {
+        playerMovement.mov = true;
+        atacando = false;
     }
 }

@@ -46,7 +46,6 @@ public class WorldGenerator : MonoBehaviour
 
     private void generarMapeado(int tipoBloqueGenerar)
     {
-        Debug.Log(tipoBloqueGenerar);
         noiseOffset = new Vector2(Random.Range(0.0f, 10f), Random.Range(0.0f, 10f));
         //noiseScale = new Vector2(Random.Range(0.0f, 10f), Random.Range(0.0f, 10f));
 

@@ -17,6 +17,8 @@ public class LocomotoraInter : MonoBehaviour
 
     [SerializeField] private GameObject puntoBajarLocomotora;
 
+    [SerializeField] private TeclaInteractuarController teclaInteractuarController;
+
     private void Awake()
     {
         locomotoraMovement = GetComponentInParent<LocomotoraMovement>();
@@ -60,5 +62,15 @@ public class LocomotoraInter : MonoBehaviour
             player.transform.rotation = Quaternion.Euler(0,90,0);
             playerEnLocomotora = true;
         }
+    }
+
+    public void interEnter()
+    {
+        teclaInteractuarController.mostrarTecla();
+    }
+
+    public void interExit()
+    {
+        teclaInteractuarController.esconderTecla();
     }
 }
