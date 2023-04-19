@@ -389,6 +389,7 @@ MonoBehaviour:
   zSize: 20
   numVerticesPlanos: 5
   offsetPerlinNoise: 0
+  prefabMesh: {fileID: 6027619441652040088, guid: 591bf87f63fd67d49917935126c8e6bf, type: 3}
 --- !u!4 &1854563181
 Transform:
   m_ObjectHideFlags: 0
