@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Random = UnityEngine.Random;
 
 public class MeshGenerator : MonoBehaviour
 {
@@ -11,9 +12,6 @@ public class MeshGenerator : MonoBehaviour
 
     [SerializeField] private Vector3[] vertices;
     [SerializeField] private int[] triangles;
-
-    public int xSize = 20;
-    public int zSize = 20;
 
     public int numVerticesPlanos = 2;
     public float offsetPerlinNoise = 0;
@@ -30,10 +28,22 @@ public class MeshGenerator : MonoBehaviour
     private int xSizeAnterior = 0;
     private int zSizeAnterior = 0;
     
+    public Vector2Int chunkSize = new Vector2Int(20, 20);
+    public Vector2 noiseScale = Vector2.one;
+    public Vector2 noiseOffset = Vector2.zero;
+    [Space] 
+    public int heightOffset = 60;
+    public float heightIntensity = 5;
+
+    public int direccion = 1;
+
     void Start()
     {
+        xSizeAnterior = chunkSize.x;
+        zSizeAnterior = chunkSize.y;
+        
         objetoMesh = Instantiate(prefabMesh, new Vector3(0 + offsetPosicionGeneracion, 0, 0), Quaternion.identity);
-        createShape(1);
+        createShape();
     }
 
     private void Update()
@@ -45,62 +55,65 @@ public class MeshGenerator : MonoBehaviour
         
         if (Input.GetKeyDown(KeyCode.G))
         {
-            createShape(1);
+            createShape();
         }
         
         updateShape();
     }
 
-    private void createShape(int direccion)
+    private void createShape()
     {
         objetoMesh.transform.localScale = new Vector3(1, 1, direccion);
         
         mesh = new Mesh();
         objetoMesh.GetComponent<MeshFilter>().mesh = mesh;
 
-        vertices = new Vector3[(xSize + 1) * (zSize + 1)];
+        vertices = new Vector3[(chunkSize.x + 1) * (chunkSize.y + 1)];
         
         int cont = 0;
         
         for (int z = 0; z < numVerticesPlanos; z++)
         {
-            for (int x = 0; x <= xSize; x++)
+            for (int x = 0; x <= chunkSize.x; x++)
             {
                 vertices[cont] = new Vector3(x, 0, z);
                 cont++;
             }
         }
         
-        for (int i = cont, z = numVerticesPlanos; z <= zSize; z++)
+        //noiseOffset = new Vector2(Random.Range(0.0f, 10f), Random.Range(0.0f, 10f));
+        noiseScale = new Vector2(Random.Range(0.0f, 10f), Random.Range(0.0f, 10f));
+
+        for (int i = cont, z = numVerticesPlanos; z <= chunkSize.y; z++)
         {
-            for (int x = 0; x <= xSize; x++)
+            for (int x = 0; x <= chunkSize.x; x++)
             {
-                float y = Mathf.PerlinNoise(xPerinNoise * .3f, yPerinNoise * .3f) * 2;
-                Debug.Log(y);
+                float perlinCordX = noiseOffset.x + x / (float)chunkSize.x * noiseScale.x;
+                float perlinCordY = noiseOffset.y + z / (float)chunkSize.y * noiseScale.y;
+
+                float y = Mathf.PerlinNoise(perlinCordX, perlinCordY) * 2;
+                
                 vertices[i] = new Vector3(x, y, z);
                 i++;
-                xPerinNoise++;
             }
-            
-            yPerinNoise++;
         }
         
-        triangles = new int[xSize * zSize * 6];
+        triangles = new int[chunkSize.x * chunkSize.y * 6];
 
         int vert = 0;
         int tris = 0;
 
-        for (int z = 0; z < zSize; z++)
+        for (int z = 0; z < chunkSize.y; z++)
         {
-            for (int x = 0; x < xSize; x++)
+            for (int x = 0; x < chunkSize.x; x++)
             {
                 triangles[tris + 0] = vert + 0;
-                triangles[tris + 1] = vert + xSize + 1;
+                triangles[tris + 1] = vert + chunkSize.x + 1;
                 triangles[tris + 2] = vert + 1;
         
                 triangles[tris + 3] = vert + 1;
-                triangles[tris + 4] = vert + xSize + 1;
-                triangles[tris + 5] = vert + xSize + 2;
+                triangles[tris + 4] = vert + chunkSize.x + 1;
+                triangles[tris + 5] = vert + chunkSize.x + 2;
 
                 vert++;
                 tris += 6;
@@ -129,47 +142,53 @@ public class MeshGenerator : MonoBehaviour
 
     private void updateShape()
     {
-        if (xSize != xSizeAnterior || zSize != zSizeAnterior)
+        if (chunkSize.x != xSizeAnterior || chunkSize.y != zSizeAnterior)
         {
-            vertices = new Vector3[(xSize + 1) * (zSize + 1)];
+            vertices = new Vector3[(chunkSize.x + 1) * (chunkSize.y + 1)];
         
             int cont = 0;
         
             for (int z = 0; z < numVerticesPlanos; z++)
             {
-                for (int x = 0; x <= xSize; x++)
+                for (int x = 0; x <= chunkSize.x; x++)
                 {
                     vertices[cont] = new Vector3(x, 0, z);
                     cont++;
                 }
             }
+            
+            noiseScale = new Vector2(Random.Range(0.0f, 10f), Random.Range(0.0f, 10f));
         
-            for (int i = cont, z = numVerticesPlanos; z <= zSize; z++)
+            for (int i = cont, z = numVerticesPlanos; z <= chunkSize.y; z++)
             {
-                for (int x = 0; x <= xSize; x++)
+                for (int x = 0; x <= chunkSize.x; x++)
                 {
-                    float y = Mathf.PerlinNoise(x * .3f, z * .3f) * 2;
+                    float perlinCordX = noiseOffset.x + x / (float)chunkSize.x * noiseScale.x;
+                    float perlinCordY = noiseOffset.y + z / (float)chunkSize.y * noiseScale.y;
+
+                    float y = Mathf.PerlinNoise(perlinCordX, perlinCordY) * 2;
+                    
                     vertices[i] = new Vector3(x, y, z);
                     i++;
                 }
             }
         
-            triangles = new int[xSize * zSize * 6];
+            triangles = new int[chunkSize.x * chunkSize.y * 6];
 
             int vert = 0;
             int tris = 0;
 
-            for (int z = 0; z < zSize; z++)
+            for (int z = 0; z < chunkSize.y; z++)
             {
-                for (int x = 0; x < xSize; x++)
+                for (int x = 0; x < chunkSize.x; x++)
                 {
                     triangles[tris + 0] = vert + 0;
-                    triangles[tris + 1] = vert + xSize + 1;
+                    triangles[tris + 1] = vert + chunkSize.x + 1;
                     triangles[tris + 2] = vert + 1;
         
                     triangles[tris + 3] = vert + 1;
-                    triangles[tris + 4] = vert + xSize + 1;
-                    triangles[tris + 5] = vert + xSize + 2;
+                    triangles[tris + 4] = vert + chunkSize.x + 1;
+                    triangles[tris + 5] = vert + chunkSize.x + 2;
 
                     vert++;
                     tris += 6;
@@ -178,8 +197,8 @@ public class MeshGenerator : MonoBehaviour
                 vert++;
             }
 
-            xSizeAnterior = xSize;
-            zSizeAnterior = zSize;
+            xSizeAnterior = chunkSize.x;
+            zSizeAnterior = chunkSize.y;
             
             updateMesh();
             
