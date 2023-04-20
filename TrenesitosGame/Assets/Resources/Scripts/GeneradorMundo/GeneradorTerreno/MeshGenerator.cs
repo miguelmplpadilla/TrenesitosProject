@@ -23,8 +23,6 @@ public class MeshGenerator : MonoBehaviour
     private int xPerinNoise = 0;
     private int yPerinNoise = 0;
 
-    private GameObject objetoMesh;
-
     private int xSizeAnterior = 0;
     private int zSizeAnterior = 0;
     
@@ -42,7 +40,8 @@ public class MeshGenerator : MonoBehaviour
         xSizeAnterior = chunkSize.x;
         zSizeAnterior = chunkSize.y;
         
-        objetoMesh = Instantiate(prefabMesh, new Vector3(0 + offsetPosicionGeneracion, 0, 0), Quaternion.identity);
+        noiseScale = new Vector2(Random.Range(3.0f, 10f), Random.Range(3.0f, 10f));
+        
         createShape();
     }
 
@@ -58,11 +57,13 @@ public class MeshGenerator : MonoBehaviour
             createShape();
         }
         
-        updateShape();
+        //updateShape();
     }
 
     private void createShape()
     {
+        GameObject objetoMesh = Instantiate(prefabMesh, new Vector3(0 + offsetPosicionGeneracion, 0, 0), Quaternion.identity);
+        
         objetoMesh.transform.localScale = new Vector3(1, 1, direccion);
         
         mesh = new Mesh();
@@ -81,14 +82,11 @@ public class MeshGenerator : MonoBehaviour
             }
         }
         
-        //noiseOffset = new Vector2(Random.Range(0.0f, 10f), Random.Range(0.0f, 10f));
-        noiseScale = new Vector2(Random.Range(0.0f, 10f), Random.Range(0.0f, 10f));
-
         for (int i = cont, z = numVerticesPlanos; z <= chunkSize.y; z++)
         {
             for (int x = 0; x <= chunkSize.x; x++)
             {
-                float perlinCordX = noiseOffset.x + x / (float)chunkSize.x * noiseScale.x;
+                float perlinCordX = noiseOffset.x + (x + offsetPerlinNoise) / (float)chunkSize.x * noiseScale.x;
                 float perlinCordY = noiseOffset.y + z / (float)chunkSize.y * noiseScale.y;
 
                 float y = Mathf.PerlinNoise(perlinCordX, perlinCordY) * 2;
@@ -123,7 +121,7 @@ public class MeshGenerator : MonoBehaviour
         }
 
         offsetPosicionGeneracion += 20;
-        offsetPerlinNoise++;
+        offsetPerlinNoise += 20;
         
         updateMesh();
         
@@ -202,7 +200,7 @@ public class MeshGenerator : MonoBehaviour
             
             updateMesh();
             
-            objetoMesh.GetComponent<MeshCollider>().sharedMesh = mesh;
+            //objetoMesh.GetComponent<MeshCollider>().sharedMesh = mesh;
         }
     }
 
