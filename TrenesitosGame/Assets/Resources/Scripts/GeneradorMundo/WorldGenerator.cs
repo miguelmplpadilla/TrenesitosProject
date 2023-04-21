@@ -25,8 +25,7 @@ public class WorldGenerator : MonoBehaviour
     private int numChunksGenerados = 0;
 
     [SerializeField] private GameObject inicioGeneracionMapa;
-    
-    
+
     void Start()
     {
         //generarChunk();
@@ -105,7 +104,7 @@ public class WorldGenerator : MonoBehaviour
 
                         if (prefabAInstanciar != null)
                         {
-                            GameObject prefabInstanciado = Instantiate(prefabAInstanciar, new Vector3(inicioGeneracionMapa.transform.position.x + i + (chunkSize.x * numChunksGenerados), 0, inicioGeneracionMapa.transform.position.z + k), Quaternion.identity);
+                            GameObject prefabInstanciado = Instantiate(prefabAInstanciar, new Vector3(inicioGeneracionMapa.transform.position.x + i + (chunkSize.x * numChunksGenerados), inicioGeneracionMapa.transform.position.y, inicioGeneracionMapa.transform.position.z + k), Quaternion.identity);
                             prefabInstanciado.transform.parent = chunk.transform;
                         }
                     }

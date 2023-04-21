@@ -34,6 +34,8 @@ public class MeshGenerator : MonoBehaviour
     public float heightIntensity = 5;
 
     public int direccion = 1;
+    
+    [SerializeField] int numChunksGenerar = 1;
 
     void Start()
     {
@@ -42,7 +44,15 @@ public class MeshGenerator : MonoBehaviour
         
         noiseScale = new Vector2(Random.Range(3.0f, 10f), Random.Range(3.0f, 10f));
         
-        createShape();
+        generarChunks(numChunksGenerar);
+    }
+
+    public void generarChunks(int num)
+    {
+        for (int i = 0; i < num; i++)
+        {
+            createShape();
+        }
     }
 
     private void Update()
@@ -52,15 +62,10 @@ public class MeshGenerator : MonoBehaviour
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
         
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            createShape();
-        }
-        
         //updateShape();
     }
 
-    private void createShape()
+    public void createShape()
     {
         GameObject objetoMesh = Instantiate(prefabMesh, new Vector3(0 + offsetPosicionGeneracion, 0, 0), Quaternion.identity);
         

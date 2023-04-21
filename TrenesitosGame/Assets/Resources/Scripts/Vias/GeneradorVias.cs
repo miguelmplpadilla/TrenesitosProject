@@ -19,6 +19,9 @@ public class GeneradorVias : MonoBehaviour
     private int numViasGeneradas = 0;
 
     private WorldGenerator worldGenerator;
+    
+    [SerializeField] private MeshGenerator meshGenerator1;
+    [SerializeField] private MeshGenerator meshGenerator2;
 
     private void Start()
     {
@@ -53,6 +56,9 @@ public class GeneradorVias : MonoBehaviour
         {
             generarVias();
             worldGenerator.generarChunk();
+            
+            meshGenerator1.generarChunks(10);
+            meshGenerator2.generarChunks(10);
         }
     }
 }
