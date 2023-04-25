@@ -19,6 +19,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float angle = 0;
     private float smoothTime = 0.05f;
     private float currentVelocity;
+    
+    private float gravity = -0.81f;
+    [SerializeField] private float gravityMultiplier = 3;
+    private float velocity = 0;
+    
 
     private Vector3 direction;
     [SerializeField] private float currentSpeed;
@@ -76,12 +81,26 @@ public class PlayerMovement : MonoBehaviour
                 speed = maxSpeed;
             }
 
+            applyGravity();
             applyRotation();
             applyMovement();
         }
         else
         {
             currentSpeed = 0;
+        }
+    }
+    
+    private void applyGravity()
+    {
+        if (characterController.isGrounded)
+        {
+            velocity = -1;
+        }
+        else
+        {
+            velocity += gravity * gravityMultiplier * Time.deltaTime;
+            direction.y = velocity;
         }
     }
     
@@ -98,6 +117,13 @@ public class PlayerMovement : MonoBehaviour
 
     private void applyMovement()
     {
-        characterController.Move(direction.normalized * Time.deltaTime * currentSpeed);
+        if (!characterController.isGrounded)
+        {
+            characterController.Move(direction.normalized * Time.deltaTime * maxSpeedSprint);
+        }
+        else
+        {
+            characterController.Move(direction.normalized * Time.deltaTime * currentSpeed);
+        }
     }
 }

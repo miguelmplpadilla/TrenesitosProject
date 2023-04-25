@@ -28,6 +28,7 @@ public class ObjetoMapaController : MonoBehaviour
             if (Physics.Raycast(transform.position, Vector3.down, out hit, Mathf.Infinity, layerMask))
             {
                 transform.position = hit.point;
+                meshRenderer.enabled = true;
                 meshRenderer.shadowCastingMode = ShadowCastingMode.On;
                 movido = true;
             }

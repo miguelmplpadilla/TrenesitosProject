@@ -67,7 +67,7 @@ public class MeshGenerator : MonoBehaviour
 
     public void createShape()
     {
-        GameObject objetoMesh = Instantiate(prefabMesh, new Vector3(0 + offsetPosicionGeneracion, 0, 0), Quaternion.identity);
+        GameObject objetoMesh = Instantiate(prefabMesh, new Vector3(-10 + offsetPosicionGeneracion, 0, 0), Quaternion.identity);
         
         objetoMesh.transform.localScale = new Vector3(1, 1, direccion);
         
