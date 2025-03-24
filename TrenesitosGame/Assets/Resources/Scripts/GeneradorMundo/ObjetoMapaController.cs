@@ -8,6 +8,7 @@ public class ObjetoMapaController : MonoBehaviour
 {
     private DetectorBloqueGenerado detectorBloqueGenerado;
     private MeshRenderer meshRenderer;
+    private Animator animator;
 
     [SerializeField] private LayerMask layerMask;
     
@@ -17,6 +18,8 @@ public class ObjetoMapaController : MonoBehaviour
     {
         detectorBloqueGenerado = GetComponentInChildren<DetectorBloqueGenerado>();
         meshRenderer = GetComponentInChildren<MeshRenderer>();
+        
+        animator = GetComponent<Animator>();
     }
 
     private void LateUpdate()
@@ -33,6 +36,19 @@ public class ObjetoMapaController : MonoBehaviour
                 movido = true;
             }
         }
+    }
+    
+    public void interEnter()
+    {
+        if (detectorBloqueGenerado.variablesPlayer.compararObjetoInventario(detectorBloqueGenerado.tipoObjeto))
+        {
+            animator.SetBool("seleccionado", true);
+        }
+    }
+
+    public void interExit()
+    {
+        animator.SetBool("seleccionado", false);
     }
 
     public void setGolpeadoFalse()

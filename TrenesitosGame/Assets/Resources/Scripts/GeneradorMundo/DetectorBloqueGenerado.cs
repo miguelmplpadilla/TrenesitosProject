@@ -7,10 +7,10 @@ public class DetectorBloqueGenerado : MonoBehaviour
 {
     
     private GameObject locomotora;
-    [SerializeField] private VariablesPlayer variablesPlayer;
+    public VariablesPlayer variablesPlayer;
 
     [SerializeField] private int vida = 3;
-    [SerializeField] private string tipoObjeto = "";
+    public string tipoObjeto = "";
 
     public bool golpeado = false;
 
